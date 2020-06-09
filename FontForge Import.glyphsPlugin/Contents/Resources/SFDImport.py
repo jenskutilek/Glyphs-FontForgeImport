@@ -69,7 +69,7 @@ class SFDImport(object):
                 k = k.strip()
                 v = v.strip()
                 if k == "BeginPrivate":
-                    print("BeginPrivate")
+                    # print("BeginPrivate")
                     in_private = True
                 elif k == "EndPrivate":
                     in_private = False
@@ -158,9 +158,16 @@ class SFDImport(object):
                 _, name = line.split(":")
                 name = name.strip()
                 # print(name)
+                name = Glyphs.niceGlyphName(name)
                 glyph = GSGlyph(name)
+                i = 0
+                new_name = name
+                while new_name in self.font.glyphs:
+                    i += 1
+                    new_name = "%s.%03i" % (name, i)
+                    glyph.name = new_name
+                name = new_name
                 self.font.glyphs.append(glyph)
-                name = glyph.name
                 glyph = self.font.glyphs[name]
                 layer = glyph.layers[0]
             elif line.strip() == "EndChar":
