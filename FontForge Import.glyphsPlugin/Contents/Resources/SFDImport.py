@@ -88,6 +88,29 @@ class SFDImport(object):
 
                 k, n, v = line.split(" ", 2)
                 if Glyphs.buildNumber >= 3000:
+                    """
+                    GSMetric = objc.lookUpClass("GSMetric")
+                    GSInfoValue = objc.lookUpClass("GSInfoValue")
+                    name = "hStem%d" % 1
+                    value = 123
+
+                    master = Font.masters[0]
+                    stem = Font.stemForName_(name)
+                    if not stem:
+                        stem = GSMetric.new()
+                        stem.setName_(name)
+                        stem.setHorizontal_(True)
+                        Font.addStem_(stem)
+                    stemValue = master.valueForStem_(stem)
+                    if not stemValue:
+                        stemValue = GSInfoValue.new()
+                        master.setStemValue_forId_(stemValue, stem.id())
+                    stemValue.setValue_(value)
+
+                    The similar mechanism is used for the metrics and axis.
+                    There are no alignment zones any more. The metrics have an
+                    overshoot property.
+                    """
                     continue
 
                 if k == "BlueValues":
