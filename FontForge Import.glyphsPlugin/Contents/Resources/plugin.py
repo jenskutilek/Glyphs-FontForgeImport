@@ -15,8 +15,8 @@ class FontForgeImport(GeneralPlugin):
     @objc.python_method
     def settings(self):
         self.name = Glyphs.localize({
-            'en': u'FontForge File (SFD)',
-            'de': u'FontForge-Datei (SFD)'
+            'en': u'FontForge File...',
+            'de': u'FontForge-Datei...'
         })
 
     @objc.python_method
@@ -28,7 +28,10 @@ class FontForgeImport(GeneralPlugin):
 
     @objc.python_method
     def showFileDialog(self, sender):
-        files = GetOpenFile(allowsMultipleSelection=True)
+        files = GetOpenFile(allowsMultipleSelection=True, filetypes=["sfd"])
+        if files is None:
+            return
+
         for file in files:
             SFDImport(file)
 
