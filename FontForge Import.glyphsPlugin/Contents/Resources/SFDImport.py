@@ -35,7 +35,7 @@ class SFDImport(object):
         self.import_sfd()
 
     def read_sfd(self):
-        with codecs.open(self.sfd_path, "rb", encoding="utf-7") as f:
+        with codecs.open(self.sfd_path, "rb", encoding="utf-8") as f:
             self.sfd = f.read()
 
     def get_parts(self):
