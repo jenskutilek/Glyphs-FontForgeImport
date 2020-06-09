@@ -80,6 +80,8 @@ class SFDImport(object):
                 elif k in header_master_map:
                     if k == "Descent":
                         self.master.descender = -1 * to_num(v)
+                    elif k == "ItalicAngle":
+                        self.master.italicAngle = -1 * to_num(v)
                     else:
                         setattr(self.master, header_master_map[k], to_num(v))
             elif in_private:
