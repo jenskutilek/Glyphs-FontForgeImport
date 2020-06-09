@@ -123,7 +123,7 @@ class SFDImport(object):
                         GSAlignmentZone(blueValues[i], blueValues[i + 1] - blueValues[i])
                         for i in range(0, len(blueValues), 2)
                     ]
-                    self.master.alignmentZones.clear()
+                    # self.master.alignmentZones.clear()
                 elif k == "StdHW":
                     self.master.horizontalStems = [to_num(v.strip("[]"))]
                 elif k == "StemSnapH":
