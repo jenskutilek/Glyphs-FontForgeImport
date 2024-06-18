@@ -13,15 +13,15 @@
 	<key>CFBundleName</key>
 	<string>FontForge Import</string>
 	<key>CFBundleVersion</key>
-	<string>4</string>
+	<string>5</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.3</string>
+	<string>1.4</string>
 	<key>UpdateFeedURL</key>
 	<string>https://raw.githubusercontent.com/jenskutilek/Glyphs-FontForgeImport/master/FontForge%20Import.glyphsPlugin/Contents/Info.plist</string>
 	<key>productPageURL</key>
 	<string>https://github.com/jenskutilek/Glyphs-FontForgeImport</string>
 	<key>productReleaseNotes</key>
-	<string>Glyphs 3 compatibility</string>
+	<string>Fix for newer pyobjc</string>
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright 2020 by Jens Kutilek</string>
 	<key>NSPrincipalClass</key>

@@ -21,7 +21,10 @@ class FontForgeImport(GeneralPlugin):
 
     @objc.python_method
     def start(self):
-        newMenuItem = NSMenuItem(self.name, self.showFileDialog)
+        newMenuItem = NSMenuItem.alloc().init()
+        newMenuItem.setTitle_(self.name)
+        newMenuItem.setAction_(self.showFileDialog)
+        newMenuItem.setTarget_(self)
         file_menu = Glyphs.menu[FILE_MENU]
         import_menu = file_menu.submenu().itemWithTitle_("Import")
         import_menu.append(newMenuItem)
