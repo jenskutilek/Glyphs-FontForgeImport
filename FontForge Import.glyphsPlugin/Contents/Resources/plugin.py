@@ -23,14 +23,13 @@ class FontForgeImport(GeneralPlugin):
     def start(self):
         newMenuItem = NSMenuItem.alloc().init()
         newMenuItem.setTitle_(self.name)
-        newMenuItem.setAction_(self.showFileDialog)
+        newMenuItem.setAction_(self.showFileDialog_)
         newMenuItem.setTarget_(self)
         file_menu = Glyphs.menu[FILE_MENU]
         import_menu = file_menu.submenu().itemWithTitle_("Import")
         import_menu.append(newMenuItem)
 
-    @objc.python_method
-    def showFileDialog(self, sender):
+    def showFileDialog_(self, sender):
         files = GetOpenFile(allowsMultipleSelection=True, filetypes=["sfd"])
         if files is None:
             return
