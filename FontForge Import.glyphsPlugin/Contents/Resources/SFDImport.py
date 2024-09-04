@@ -1,5 +1,6 @@
 # MenuTitle: FontForge (SFD) Import
-from __future__ import absolute_import, division, print_function, unicode_literals
+from __future__ import annotations
+
 import codecs
 
 from GlyphsApp import Glyphs, GSAlignmentZone, GSFont, GSGlyph, GSInstance
@@ -28,7 +29,7 @@ def to_num(s):
     return int(s)
 
 
-class SFDImport(object):
+class SFDImport:
     def __init__(self, sfd_path):
         self.sfd_path = sfd_path
         self.read_sfd()
