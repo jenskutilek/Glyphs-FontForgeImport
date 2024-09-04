@@ -103,6 +103,7 @@ class SFDImport:
 
             elif in_private:
                 if line.startswith("EndPrivate"):
+                    in_private = False
                     continue
 
                 try:
