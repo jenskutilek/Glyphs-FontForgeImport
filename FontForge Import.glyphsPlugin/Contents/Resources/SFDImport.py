@@ -67,7 +67,7 @@ class SFDImport:
     def import_header(self, header):
         assert header.startswith("SplineFontDB:")
         in_private = False
-        for line in header.splitlines():
+        for ln, line in enumerate(header.splitlines()):
             k_v = line.split(":")
             if len(k_v) == 2:
                 k, v = k_v
@@ -93,7 +93,12 @@ class SFDImport:
                 if line.startswith("EndPrivate"):
                     continue
 
-                k, n, v = line.split(" ", 2)
+                try:
+                    k, n, v = line.split(" ", 2)
+                except ValueError:
+                    print(f"Error parsing line {ln}:")
+                    print(line)
+
                 if Glyphs.buildNumber >= 3000:
                     """
                     GSMetric = objc.lookUpClass("GSMetric")
