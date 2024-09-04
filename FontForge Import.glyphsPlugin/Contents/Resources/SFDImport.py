@@ -200,7 +200,9 @@ class SFDImport:
                 _, w = line.split()
                 layer.width = to_num(w)
             elif line.startswith("Fore"):
-                cur_layer = "Fore"
+                layer = glyph.layers[0]
+            elif line.startswith("Back"):
+                layer = glyph.layers[0].background
             elif line.startswith("SplineSet"):
                 in_splineSet = True
                 pen = layer.getPen()
