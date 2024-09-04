@@ -66,6 +66,7 @@ class SFDImport:
 
     def import_header(self, header):
         assert header.startswith("SplineFontDB:")
+        in_grid = False
         in_private = False
         for ln, line in enumerate(header.splitlines()):
             k_v = line.split(":")
@@ -89,6 +90,17 @@ class SFDImport:
                         self.master.italicAngle = -1 * to_num(v)
                     else:
                         setattr(self.master, header_master_map[k], to_num(v))
+
+            elif len(k_v) == 1:
+                k = k_v[0].strip()
+                if in_grid:
+                    if k == "EndSplineSet":
+                        in_grid = False
+                    continue
+
+                if k == "Grid":
+                    in_grid = True
+
             elif in_private:
                 if line.startswith("EndPrivate"):
                     continue
