@@ -14,10 +14,9 @@ class FontForgeImport(GeneralPlugin):
 
     @objc.python_method
     def settings(self):
-        self.name = Glyphs.localize({
-            'en': u'FontForge File...',
-            'de': u'FontForge-Datei...'
-        })
+        self.name = Glyphs.localize(
+            {"en": "FontForge File...", "de": "FontForge-Datei..."}
+        )
 
     @objc.python_method
     def start(self):

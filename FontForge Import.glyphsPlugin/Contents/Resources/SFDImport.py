@@ -120,33 +120,26 @@ class SFDImport(object):
                     continue
 
                 if k == "BlueValues":
-                    blueValues = [
-                        to_num(i.strip("[]"))
-                        for i in v.split()
-                    ]
+                    blueValues = [to_num(i.strip("[]")) for i in v.split()]
                     # print(blueValues)
                     self.master.alignmentZones = [
-                        GSAlignmentZone(blueValues[i], blueValues[i + 1] - blueValues[i])
+                        GSAlignmentZone(
+                            blueValues[i], blueValues[i + 1] - blueValues[i]
+                        )
                         for i in range(0, len(blueValues), 2)
                     ]
                     # self.master.alignmentZones.clear()
                 elif k == "StdHW":
                     self.master.horizontalStems = [to_num(v.strip("[]"))]
                 elif k == "StemSnapH":
-                    self.master.horizontalStems = [
-                        self.master.horizontalStems[0]
-                    ] + [
-                        to_num(i.strip("[]"))
-                        for i in v.split()
+                    self.master.horizontalStems = [self.master.horizontalStems[0]] + [
+                        to_num(i.strip("[]")) for i in v.split()
                     ]
                 elif k == "StdVW":
                     self.master.verticalStems = [to_num(v.strip("[]"))]
                 elif k == "StemSnapV":
-                    self.master.verticalStems = [
-                        self.master.verticalStems[0]
-                    ] + [
-                        to_num(i.strip("[]"))
-                        for i in v.split()
+                    self.master.verticalStems = [self.master.verticalStems[0]] + [
+                        to_num(i.strip("[]")) for i in v.split()
                     ]
                 else:
                     pass
@@ -214,7 +207,7 @@ class SFDImport(object):
                     pen.curveTo(
                         (to_num(x0), to_num(y0)),
                         (to_num(x1), to_num(y1)),
-                        (to_num(x), to_num(y))
+                        (to_num(x), to_num(y)),
                     )
             else:
                 pass
@@ -223,5 +216,6 @@ class SFDImport(object):
 
 if __name__ == "__main__":
     from os.path import expanduser, join
+
     sfd = SFDImport(join(expanduser("~"), "Downloads", "salieri-regular.sfd"))
     print("OK.")
