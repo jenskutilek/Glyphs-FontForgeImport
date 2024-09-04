@@ -113,6 +113,7 @@ class SFDImport:
                     print(line)
 
                 if Glyphs.buildNumber >= 3000:
+                    # FIXME
                     """
                     GSMetric = objc.lookUpClass("GSMetric")
                     GSInfoValue = objc.lookUpClass("GSInfoValue")
