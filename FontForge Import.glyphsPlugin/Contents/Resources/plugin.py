@@ -4,10 +4,11 @@ from __future__ import division, print_function, unicode_literals
 
 import objc
 
-from AppKit import NSMenuItem
+from AppKit import NSMenuItem, NSModalResponseOK, NSOpenPanel
 from GlyphsApp import FILE_MENU, GetOpenFile, Glyphs
 from GlyphsApp.plugins import GeneralPlugin
 from SFDImport import SFDImport
+from SFDirImport import SFDirImport
 
 
 class FontForgeImport(GeneralPlugin):
@@ -17,12 +18,20 @@ class FontForgeImport(GeneralPlugin):
         self.name = Glyphs.localize(
             {"en": "FontForge File...", "de": "FontForge-Datei..."}
         )
+        self.sfdirName = Glyphs.localize(
+            {"en": "FontForge Folder (SFDir)...", "de": "FontForge-Ordner (SFDir)..."}
+        )
 
     @objc.python_method
     def start(self):
+        self._addMenuItem(self.name, self.showFileDialog_)
+        self._addMenuItem(self.sfdirName, self.showFileDialogFolder_)
+
+    @objc.python_method
+    def _addMenuItem(self, title, action):
         newMenuItem = NSMenuItem.alloc().init()
-        newMenuItem.setTitle_(self.name)
-        newMenuItem.setAction_(self.showFileDialog_)
+        newMenuItem.setTitle_(title)
+        newMenuItem.setAction_(action)
         newMenuItem.setTarget_(self)
         file_menu = Glyphs.menu[FILE_MENU]
         import_menu = file_menu.submenu().itemWithTitle_("Import")
@@ -37,6 +46,19 @@ class FontForgeImport(GeneralPlugin):
 
         for file in files:
             SFDImport(file)
+
+    def showFileDialogFolder_(self, sender):
+        panel = NSOpenPanel.new()
+        panel.setCanChooseFiles_(False)
+        panel.setCanChooseDirectories_(True)
+        panel.setCanCreateDirectories_(True)
+        panel.setTreatsFilePackagesAsDirectories_(True)
+        panel.setAllowsMultipleSelection_(True)
+        if panel.runModal() != NSModalResponseOK:
+            return
+
+        for folder in panel.filenames():
+            SFDirImport(folder)
 
     @objc.python_method
     def __file__(self):
