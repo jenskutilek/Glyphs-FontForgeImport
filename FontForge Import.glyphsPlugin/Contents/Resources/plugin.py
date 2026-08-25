@@ -26,6 +26,8 @@ class FontForgeImport(GeneralPlugin):
         newMenuItem.setTarget_(self)
         file_menu = Glyphs.menu[FILE_MENU]
         import_menu = file_menu.submenu().itemWithTitle_("Import")
+        if import_menu is None:
+            import_menu = file_menu.submenu().itemWithTag_(22)
         import_menu.append(newMenuItem)
 
     def showFileDialog_(self, sender):
