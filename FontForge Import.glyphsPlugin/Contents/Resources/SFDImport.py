@@ -3,7 +3,15 @@ from __future__ import annotations
 
 import codecs
 
-from GlyphsApp import Glyphs, GSAlignmentZone, GSFont, GSGlyph, GSInstance
+from GlyphsApp import (
+    Glyphs,
+    GSAlignmentZone,
+    GSComponent,
+    GSFont,
+    GSGlyph,
+    GSInstance,
+    GSLayer,
+)
 
 header_font_map = {
     "Copyright": "copyright",
@@ -165,6 +173,19 @@ class SFDImport:
                     pass
 
     def import_glyphs(self, glyphs):
+        # Refer lines reference glyphs by SFD-internal index, which may point
+        # to glyphs that appear later in the text, so collect the index->name
+        # mapping first.
+        gid_to_name = {}
+        current_name = None
+        for line in glyphs.splitlines():
+            if line.startswith("StartChar:"):
+                current_name = line.split(":", 1)[1].strip()
+            elif line.startswith("Encoding:") and current_name:
+                parts = line.split()
+                if len(parts) >= 4:
+                    gid_to_name[int(parts[3])] = Glyphs.niceGlyphName(current_name)
+
         glyph = None
         glyphOrder = {}
         in_splineSet = False
@@ -188,6 +209,8 @@ class SFDImport:
                 name = new_name
                 self.font.glyphs.append(glyph)
                 glyph = self.font.glyphs[name]
+                if not glyph.layers:
+                    glyph.layers.append(GSLayer())
                 layer = glyph.layers[0]
             elif line.strip() == "EndChar":
                 # print("EndChar")
@@ -204,6 +227,17 @@ class SFDImport:
                 layer = glyph.layers[0]
             elif line.startswith("Back"):
                 layer = glyph.layers[0].background
+            elif line.startswith("Refer:"):
+                # Component reference:
+                #   Refer: <gid> <flags> <S/N> <a> <b> <c> <d> <e> <f> <layer>
+                parts = line.split()
+                if len(parts) >= 10 and layer is not None:
+                    ref_name = gid_to_name.get(int(parts[1]))
+                    if ref_name:
+                        transform = tuple(float(x) for x in parts[4:10])
+                        comp = GSComponent(ref_name)
+                        comp.transform = transform
+                        layer.shapes.append(comp)
             elif line.startswith("SplineSet"):
                 in_splineSet = True
                 pen = layer.getPen()
